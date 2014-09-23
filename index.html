@@ -1,0 +1,738 @@
+<!--
+QtWebEngine DevDays 2014 talk
+
+Based on the Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="nobackground lightgray">
+    <article class="flexbox vcenter">
+      <span><img src="images/europe_alpha.png"></span>
+    </article>
+  </slide>
+
+  <slide class="title-slide segue nobackground">
+      <aside class="note">
+      <section><ul>
+      <li>Welcome everyone</li>
+      <li>redirect people to other rooms?</li>
+      </ul></section>
+    </aside>
+    <aside class="gdbar"><img src="images/qt-logo-80.png"></aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <aside class="note">
+      <section><ul>
+      <li>French national. bear with my accent</li>
+      <li>Start in support. Long time customers: we interacted!</li>
+      <li>business cards waster</li>
+      <li>enjoy working on open source technologies as a day job</li>
+      </ul></section>
+    </aside>
+    <hgroup>
+      <h2 class="monospace">whoami</h2>
+    </hgroup>
+    <article>
+      <ul>
+         <li>Nokia <i class="fa fa-long-arrow-right"></i> Digia <i class="fa fa-long-arrow-right"></i> The Qt Company</li>
+         <li>Based in Oslo, Norway</li>
+         <li>Open-source enthusiast</li>
+         <li>Loves cooking &amp; climbing</li>
+      </ul>
+
+    </article>
+  </slide>
+
+  <slide class="fill nobackground" style="background-image: url(images/climbing_envers.jpg); background-position: 80% 80%;">
+    <aside class="note">
+      <section>
+        Lots I want to share. So preparing this talk was fun.
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="white auto-fadein" style="text-align: right;text-shadow: 8px 6px 12px black;">What are we doing here?</h2>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <aside class="note">
+      <section>
+      <ul>
+      <li>Too many TV series</li>
+      <li>"Spin-off" of QtWebKit</li>
+      <li>Blink/WebKit fork already feels like a long time ago</li>
+      <li>Discussed at QtCS13 and introduced here last year</li>
+      <li>We wanted to get it right, and 5.3 was too tight</li>
+       <!-- <li>Focus on Embedded</li>-->
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>Quick recap</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Blink: an earthquake in QtWebKit land</li>
+        <li>Talk here last year (<a href="http://youtu.be/Pc5zKGmeYN0"><i class="fa fa-youtube-play"></i> <span class="smaller">youtu.be/Pc5zKGmeYN0</span></a>)</li>
+        <li>Promising yet very experimental at the time</li>
+        <li>Shorter release cycle for 5.3</li>
+        <li>1.0 is coming</li>
+      </ul>
+    </article>
+  </slide>
+
+
+  <slide>
+    <aside class="note">
+      <section>
+      <ul>
+      <li>Several goals: (re-)introduce + convince</li>
+      <li>Just one talk still this year</li>
+      <li>Cater to everyone</li>
+      <li>Weather forecast in Norway</li>
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>Agenda</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Overview</li>
+        <li>Integration considerations</li>
+        <li>Forecast</li>
+      </ul>
+    </article>
+  </slide>
+
+   <slide class="segue dark nobackground">
+   <aside class="note">
+      <section>
+        Before I even go over what it will do for you, let's try to take a step back and ask ourselves "Who needs a WebEngine?" (and icidentally who doesn't, really).
+      </section>
+    </aside>
+    <aside class="gdbar"><img src="images/qt-logo-80.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Overview</h2>
+      <h3>What it does</h3>
+    </hgroup>
+  </slide>
+
+    <slide>
+    <aside class="note">
+      <section>
+      We've seen web technologies get really big those last few years.
+      <ul>
+      <li>Many existing services that provide a web client. Especially true for multimedia content (Netflix, YouTube, etc)</li>
+      <li>not another UI toolkit, we already have Qt Quick for that. != Phone Gap/ Cordova</li>
+      <li>Qt and Qt quick more suited for UI (flexibility, performance and cross platform)</li>
+      <li>Not really relevant on mobile. Lower level module.</li>
+      <li>Making a platform/embedded device? Alright</li>
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>Purpose</h2>
+      <h3><emph>&ldquo;Who needs a web engine?&rdquo;</emph></h3>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Integrate web content</li>
+        <li><i class="fa fa-warning"></i> Not intended as a <emph>Web Runtime</emph></li>
+        <li>Does the platform already have one?</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <aside class="note">
+      <section>
+      <ul>
+      <li>Chrome established itself as a leading browser out there</li>
+      <li>has very little chrome</li>
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>The ideal</h2>
+    </hgroup>
+    <article class="flexbox vcenter">
+      <img style="height:500px" src="images/chromium_window.png" alt="Chromium window screenshot" title="Chromium window screenshot">
+    </article>
+  </slide>
+
+    <slide>
+    <aside class="note">
+      <section>
+      So essentially we'd like to
+      <ul>
+      <li>drop the chrome</li>
+      <li>get the contents</li>
+      <li>put them into our Qt application</li>
+      <li>and have some ways to interact with it</li>
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>The ideal (slight simplification)</h2>
+    </hgroup>
+    <article class="flexbox vcenter">
+      <img style="height:500px" src="images/chromium_obscured.png" alt="Just the contents" title="Just the contents">
+    </article>
+  </slide>
+
+<!-- FIXME: Documentation walkthrough -->
+<!--   <slide>
+    <hgroup>
+      <h2>What does it look like?</h2>
+    </hgroup>
+    <article>
+      <iframe data-src="file:///home/pierre/dev/qt5/qtbase/doc/qtwebenginewidgets/qtwebenginewidgets-index.html"></iframe>
+    </article>
+  </slide>-->
+
+  <slide>
+    <aside class="note">
+      <section>
+      Little secret/slight difference with other Qt Modules: most of the code is not from us.
+      <ul>
+      <li>Our snapshot -&gt; stripped (chrome layer among others)</li>
+      <li>Sloccount uses model that only take into account lines of code</li>
+      <li>High quality open source code base with top notch contributors</li>
+      <li>Impressive numbers... "Billion dollar code base"</li>
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>A word on complexity</h2>
+    </hgroup>
+    <article>
+      <pre data-filename="sloccount"> 
+Totals grouped by language (dominant language first):
+cpp:        4754146 (52.93%)
+ansic:      3293012 (36.66%)
+asm:         446223 (4.97%)
+python:      276758 (3.08%)
+(...)
+
+Total Physical Source Lines of Code (SLOC)                = 8,981,788
+Development Effort Estimate, Person-Years (Person-Months) = 2,831.79 (33,981.47)
+Schedule Estimate, Years (Months)                         = 10.98 (131.77)
+Estimated Average Number of Developers (Effort/Schedule)  = 257.89
+Total Estimated Cost to Develop                           = $ 382,536,221
+ (average salary = $56,286/year, overhead = 2.40).
+      </pre>
+    </article>
+    <footer class="source">generated using David A. Wheeler&rsquo;s &lsquo;SLOCCount&rsquo;.</footer>
+  </slide>
+
+  <slide class="fill nobackground" style="background-image: url(images/mario.jpg);">
+    <hgroup>
+      <h2 class="white" style="text-align: right;text-shadow: 8px 6px 12px black;">Somebody call the plumber!</h2>
+    </hgroup>
+    <footer class="source cc-by-sa" style="position:absolute; left:65%; bottom: 3px;">&copy; BrokenSphere / Wikimedia Commons</footer>
+  </slide>
+
+  <slide>
+    <aside class="note">
+      <section><ul>
+      <li>Showed a similar diagram last year<li>
+      <li>Core lib wrapping content API ++</li>
+      <li>So widgets lib and quick plugin are thin</li>
+      <li>and much more similar than WKWidgets and WK2</li>
+      <!--<li>Widgets are there for convenience (QtWebkit is aging fast)</li>-->
+      </ul></section>
+    </aside>
+    <hgroup>
+      <h2>Architecture</h2>
+    </hgroup>
+    <article>
+<!-- FIXME: This whole slide is all hardcoded, really needs a proper diagram cleanup here... -->
+        <div style="text-align:center; position: absolute; left: 40px; width:48%; top: 22%; margin-left: 20px;">
+            Application process
+                <div style="height:15%; margin-top: 2%;">
+                    <div class="splitter">
+                        <div class="green box compactText">
+                            <i>Widgets</i><br/>
+                            QT += webenginewidgets
+                        </div>
+                        <div class="orange box compactText">
+                            <i>Qt Quick</i><br/>
+                            import QtWebEngine 1.0
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:center; position: absolute; right: 5%; width: 37%; top: 22%; border-left: 5px dashed gray; height: 44%; margin-right: 30px;">
+            Render Process <br/>
+                    <div style="margin: 2% 17% 0 4%;">
+                        <div class="bordeaux box compactText" style="line-height: 2.2;">QtWebEngineProcess </div>
+                    </div>
+            </div>
+            <div style="width:90%; height:20%; margin-top: 17%; margin-bottom: 50px;">
+                <div class="box" style="padding: 15px; line-height: 1.9;">
+                    QtWebEngineCore
+                    <div class="blue box" style="padding-bottom:20px; padding-top:20px;">Chromium</div>
+                </div>
+            </div>
+            <ul class="nodot">
+                <li><i class="fa fa-hand-o-right"></i>Widgets C++ library</li>
+                <li><i class="fa fa-hand-o-right"></i>QtQuick plugin</li>
+            </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Widgets example</h2>
+    </hgroup>
+    <article>
+      <pre class="prettyprint" data-filename="example.pro">
+TEMPLATE = app
+TARGET = mycoolexample
+<b>QT += webenginewidgets</b>
+SOURCES = main.cpp
+      </pre>
+      <pre class="prettyprint" data-filename="main.cpp">
+<b>#include &lt;QtWebEngineWidgets&gt;</b>
+
+int main(int argc, char **argv)
+{
+    QApplication app(argc, argv);
+    QUrl url = (argc &gt; 1) ? QUrl::fromUserInput(argv[1]) : QUrl("http://qt.io");
+<b>    QWebEngineView view;
+    view.load(url);</b>
+    view.show();
+    return app.exec();
+}
+      </pre>
+<!--      <ul>
+        <li>Basic features working</li>
+        <li>Closely resembles QtWebKitWidgets</li>
+      </ul>-->
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>QtQuick example</h2>
+      <h3>Enabling context sharing</h3>
+    </hgroup>
+    <article>
+      <pre class="prettyprint" data-filename="main.cpp">
+<b>#include &lt;QtWebEngine/qtwebengineglobal.h&gt;</b>
+
+int main(int argc, char **argv)
+{
+    QGuiApplication app(argc, argv);
+<b>    QtWebEngine::initialize();</b>
+    QQmlApplicationEngine appEngine;
+    appEngine.load(QUrl("qrc:/ui.qml"));
+    return app.exec();
+}
+      </pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>QtQuick example</h2>
+    </hgroup>
+    <article>
+      <pre class="prettyprint smaller" data-filename="ui.qml">
+<b>import QtWebEngine 1.0</b>
+import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.1
+
+ApplicationWindow {
+    width: 800
+    height: 600
+    ColumnLayout {
+        anchors.fill: parent
+        TextField {
+            id: addressBar
+            focus: true
+            Layout.fillWidth: true
+<b>            text: webView.url
+            onAccepted: webView.url = text
+        }
+        WebEngineView {
+            id: webView</b>
+            url: "http://www.qt.io"
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
+    }
+}
+      </pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Which one can/should I use?</h2>
+    </hgroup>
+    <article>
+      <table style="width:80%; margin: auto;">
+        <tr>
+          <th></th><th class="centered">Widgets</th><th class="centered">Qt Quick</th>
+        </tr>
+        <tr>
+          <td>No OpenGL</td><td class="centered"><i class="fa fa-ban"></i></td><td class="centered"><i class="fa fa-ban"></i></td>
+        </tr>
+        <tr>
+          <td>Porting (maintenance)</td><td class="centered"><i class="fa fa-check"></i></td><td class="centered"><i class="fa fa-thumbs-down"></i></td>
+        </tr>
+        <tr>
+          <td>Porting (long term)</td><td class="centered"><i class="fa fa-check"></i></td><td class="centered"><i class="fa fa-thumbs-o-up"></i></td>
+        </tr>
+        <tr>
+          <td>New project</td><td class="centered"><i class="fa fa-thumbs-down"></i></td><td class="centered"><i class="fa fa-thumbs-o-up"></i></td>
+        </tr>
+      </table>
+    </article>
+  </slide>
+
+   <slide class="segue dark nobackground">
+    <aside class="gdbar"><img src="images/qt-logo-80.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Integration with Qt</h2>
+      <h3>How it&rsquo;s done</h3>
+    </hgroup>
+  </slide>
+
+  <slide class="fill nobackground" style="background-image: url(images/square-peg.jpg); background-position: 100% 100%;">
+    <aside class="note">
+      <section><ul>
+        <li>Different ways to fit pegs into holes</li>
+        <li>Can be more or less elegant depending on design decisions</li>
+      </ul></section>
+     </aside>
+    <hgroup>
+      <h2 class="white auto-fadein" style="text-shadow: -3px 1px 6px black; position: absolute; left: 63%; top:45%;">Does it matter?</h2>
+    </hgroup>
+    <footer class="source black cc-by-nd" style="position:absolute; left: 78%; bottom: 5px;">&copy; ePublicist [<a href="https://www.flickr.com/photos/epublicist/3546059144/">Flickr</a>]</footer>
+  </slide>
+
+   <slide>
+     <aside class="note">
+      <section><ul>
+      <li>Meager Web Developer skills</li>
+      <li>Powerful Web APIs (&lt;3 CSS3 transitions)<li>
+      <li>Browser engines (Complex beasts remember) make that work well</li>
+      <li>Render different "Layers" to their own backing store</li>
+      <li>Don't re-render every frame. Simply compositing</li>
+      <li><b>Demo with --show-composited-layer-borders</b></li>
+      </ul></section>
+     </aside>
+     <article>
+<!-- Depending on network connectivity at the venue... -->
+<!--      <iframe data-src="http://www.youtube.com/tv"></iframe>-->
+      <iframe data-src="resources/flippin-qt-logo.html"></iframe>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Visualizing it</h2>
+    </hgroup>
+    <article style="display: flex;">
+        <img style="margin: auto; height: 470px;" src="images/layers/whole-stuff.png"></img>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Visualizing it</h2>
+    </hgroup>
+    <article style="display: flex;">
+        <img style="margin: auto; height: 470px;" src="images/layers/eclate1color.png"></img>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Visualizing it</h2>
+    </hgroup>
+    <article style="display: flex;">
+        <img style="margin: auto; height: 470px;" src="images/layers/eclate2.png"></img>
+    </article>
+  </slide>
+
+  <slide>
+    <aside class="note">
+      <section>
+      <ul>
+      <li>I didn&rsquo;t come up with the name</li>
+      <li>One pass compositing of the Chrome and the contents</li>
+      <li>Timing was good: we could get this in place from the get go</li>
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>Enter Übercompositor</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Similar problem on Chromium&rsquo;s side</li>
+        <li>Übercompositor project</li>
+        <li>Excellent timing</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <aside class="note">
+      <ul>
+      <li>Diagrams are good</li>
+      <li>But mental mapping and seeing code helps</li>
+      <li>Teaser: the curious will dig in</li>
+      </ul>
+    </aside>
+    <hgroup>
+      <h2>Scene graph integration walkthrough</h2>
+    </hgroup>
+    <article>
+      <pre class="prettyprint" data-filename="render_widget_host_view_qt.cpp">
+
+void RenderWidgetHostViewQt::OnSwapCompositorFrame(uint32 surface_id
+                      , <b>scoped_ptr&lt;cc::CompositorFrame&gt; frame</b>)
+{
+    m_needsDelegatedFrameAck = true;
+    m_pendingOutputSurfaceId = output_surface_id;
+    // ...
+
+    <b>m_frameNodeData->frameData = frame->delegated_frame_data.Pass();</b>
+
+    // ...
+
+    m_delegate-&gt;update();
+
+    // ...
+}
+      </pre>
+    </article>
+  </slide>
+
+  <slide>
+    <aside class="note">
+      <ul>
+      <li></li>
+      </ul>
+    </aside>
+    <hgroup>
+      <h2>Scene graph integration walkthrough</h2>
+    </hgroup>
+    <article>
+      <pre class="prettyprint" data-filename="render_widget_host_view_qt.cpp">
+
+QSGNode *RenderWidgetHostViewQt::updatePaintNode(QSGNode *oldNode)
+{
+    DelegatedFrameNode *frameNode = static_cast&lt;DelegatedFrameNode *&gt;(oldNode);
+    if (!frameNode)
+        frameNode = new DelegatedFrameNode;
+
+    <b>frameNode-&gt;commit(m_frameNodeData.data(), &amp;m_resourcesToRelease);</b>
+
+    // This is possibly called from the Qt render thread, post the ack back to the UI
+    // to tell the child compositors to release resources and trigger a new frame.
+    if (m_needsDelegatedFrameAck) {
+        m_needsDelegatedFrameAck = false;
+        content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
+            base::Bind(&amp;RenderWidgetHostViewQt::sendDelegatedFrameAck, AsWeakPtr()));
+    }
+
+    return frameNode;
+}
+      </pre>
+    </article>
+  </slide>
+
+  <slide>
+    <aside class="note">
+      <ul>
+        <li>do a bit of book-keeping</li>
+        <li>reconstruct a scene graph subtree from the CC quads</li>
+      </ul>
+    </aside>
+    <hgroup>
+      <h2>Scene graph integration walkthrough</h2>
+    </hgroup>
+    <article>
+      <pre class="prettyprint" data-filename="delegated_frame_node.cpp" style="font-size:17px; letter-spacing:-1px; padding-left:30px;">
+<!--       style="overflow:scroll; height:410px;" -->
+void DelegatedFrameNode::commit(DelegatedFrameNodeData* data
+                                       , cc::ReturnedResourceArray *resourcesToRelease)
+//...
+    for (; it != end; ++it) {
+        cc::DrawQuad *quad = *it;
+//...
+        switch (quad-&gt;material) {
+//...
+<b>        case cc::DrawQuad::RENDER_PASS: {
+           const cc::RenderPassDrawQuad *renderPass = cc::RenderPassDrawQuad::MaterialCast(quad);
+           QSGTexture *texture = findRenderPassTexture(renderPass-&gt;render_pass_id, m_renderPassTextures).data();
+           // cc::GLRenderer::DrawRenderPassQuad silently ignores missing render passes.
+           if (!texture)
+               continue;
+
+           QSGSimpleTextureNode *textureNode = new QSGSimpleTextureNode;
+           textureNode-&gt;setRect(toQt(quad-&gt;rect));
+           textureNode-&gt;setTexture(texture);
+           currentLayerChain-&gt;appendChildNode(textureNode);
+           break;
+       }</b>
+//...
+       </pre>
+     </article>
+  </slide>
+
+    <slide>
+    <aside class="note">
+      <section>
+      <ul>
+      <li>Getting the graphics right matters, but other aspects on feature front</li>
+      <li>Hope you got to attend the QtWebChannel talk earlier (youtube later)</li>
+      <li>Would have liked to set the stage for Milian</li>
+      <li>QtWebChannel in a sentence</li>
+      <li>Ask questions / taking suggestions for talks next year</li>
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>Other integration aspects</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>API "speaks" Qt types</li>
+        <ul><li>Apparent in Widgets (e.g. <code>load(const QUrl &amp; url)</code>)</li>
+            <li>Transparent in QtQuick</li></ul>
+        <li>QtWebChannel as a way to expose QObjects to JS</li>
+        <ul><li>Which underlying transport mechanism?</li></ul>
+      </ul>
+    </article>
+  </slide>
+
+  <slide class="segue dark nobackground">
+    <aside class="gdbar"><img src="images/qt-logo-80.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Forecast</h2>
+      <h3>When to expect what</h3>
+    </hgroup>
+  </slide>
+
+  <slide class="fill nobackground" style="background-image: url(images/sunny.jpg);">
+<!--    <hgroup>
+      <h2 class="white auto-fadein" style="text-shadow: 8px 6px 12px black;">It's looking pretty good!</h2>
+    </hgroup> -->
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>First things first</h2>
+      <h3>1.0 with 5.4</h3>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Basic feature set</li>
+        <li>Up-to-date engine (Based on Chromium 37)</li>
+        <li>Try it out!</li>
+        <ul class="nodot">
+          <li><i class="fa fa-bug"></i><b>WebEngine</b> Component in <a href="https://bugreports.qt-project.org/secure/Dashboard.jspa">JIRA</a></li>
+          <li><i class="fa fa-envelope"></i>Mailing list: <a href="mailto: qtwebengine@qt-project.org"><code>qtwebengine@qt-project.org</code></a></li>
+        </ul>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>What&rsquo;s next?</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Software compositor</li>
+        <li>WebChannel integration</li>
+<!--    HW acc video      -->
+        <li>Invisible things</li>
+        <ul><li>Better test coverage</li>
+            <li>Build system changes up ahead</li><ul>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Ideas floating around</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>User script mechanism</li>
+        <li>Someone said PPAPI support?</li>
+        <li><b>&lt;place your contribution here&gt;</b></li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="images/qt-logo-80.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>&lt;Thank You!&gt;</h2>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
+    </p>
+  </slide>
+
+<!--  <slide class="white-bkg nobackground">-->
+  <slide class="black-bkg nobackground">
+
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-56770757-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

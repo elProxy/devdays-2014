@@ -1,0 +1,98 @@
+@import "compass/css3/background-size";
+@import "compass/css3/border-radius";
+@import "compass/css3/images";
+@import "compass/css3/transition";
+@import "compass/css3/transform";
+@import "variables";
+
+$translucentlightgray: rgba(215, 214, 213, 0.6);
+$translucentwhite: rgba(255, 255, 255, 0.2);
+
+slides > slide {
+
+  &.title-slide {
+      background: url(../../images/qtdd2014/title.png) no-repeat 100% 0%;
+      @include background-size(contain);
+      background-color: white;
+
+      &.current {
+	.gdbar {
+	  @include background-size(100% 100%);
+	}
+      }
+     aside.gdbar {
+	height: 155px;
+	width: 450px;
+	position: absolute;
+	left: -1px;
+	top: 225px;
+	@include border-radius(0 10px 10px 0);
+	@include background(linear-gradient(left, transparent, transparent, $translucentwhite, $translucentlightgray) no-repeat);
+
+	@include background-size(0% 100%);
+	@include transition(background-size 0.5s ease-out 0.5s); /* Better to transition only on background-size, but not sure how to do that with the mixin. */
+	img {
+	    display: none;
+	}
+     }
+
+	
+      
+      hgroup {
+	bottom: 100px;
+	right: 100px;
+
+	h1 {
+	  font-size: 65px;
+	  line-height: 1.4;
+	  letter-spacing: -1px;
+	}
+
+	h2 {
+	  font-size: 42px;
+	  color: $gray-3;
+	  font-weight: inherit;
+	  text-align: center;
+	}
+
+	p {
+	  font-size: 20px;
+	  color: $gray-3;
+	  line-height: 1.3;
+	  margin-top: 2em;
+	}
+      }
+  }
+  
+/*  background: url(../../images/qtdd2014/header.png) no-repeat 100% 0%;
+  @include background-size(contain);
+  
+  hgroup {
+	bottom: 100px;
+	right: 100px;
+
+	h1 {
+	  font-size: 65px;
+	  line-height: 1.4;
+	  letter-spacing: -1px;
+	  color: white
+	}
+
+	h2 {
+	  font-size: 36px;
+	  color: white;
+	  font-weight: inherit;
+	  text-align: center;
+	}
+	h3 {
+          margin-top: 30px;
+	}
+	p {
+	  font-size: 20px;
+	  color: $gray-3;
+	  line-height: 1.3;
+	  margin-top: 2em;
+	}
+      }*/
+  
+}

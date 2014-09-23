@@ -21,7 +21,7 @@
  */
 ::selection {
   color: white;
-  background-color: $brand-yellow;
+  background-color: $qt-new-green;
   @include text-shadow(none);
 }
 
@@ -59,10 +59,14 @@ body {
   background: black;
 }
 
+emph {
+ font-style: italic;
+}
+
 slides > slide {
   display: none;
   font-family: 'Open Sans', Arial, sans-serif;
-  font-size: 26px;
+  font-size: 32px;
   color: $gray-3;
   //@include background(linear-gradient(white, white 85%, $gray-1));
   //background-color: white;
@@ -124,8 +128,20 @@ slides > slide {
     //@include transform(translate3d($translateX * 2, 0, 0));
   }
 
+  &.lightgray {
+    background: $lightgray !important;
+  }
+
   &.dark {
     background: $gray-4 !important;
+  }
+
+  &.black-bkg {
+    background: black !important;
+  }
+
+  &.white-bkg {
+    background: white !important;
   }
 
   &:not(.nobackground) {
@@ -138,7 +154,7 @@ slides > slide {
       position: absolute;
       bottom: $slide-top-bottom-padding / 2;
       left: $slide-left-right-padding;
-      background: url(../../images/google_developers_icon_128.png) no-repeat 0 50%;
+      background: url(../../images/qt-logo-80.png) no-repeat 0 50%;
       @include background-size($brand-small-icon-size $brand-small-icon-size);
       padding-left: $brand-small-icon-size + 10;
       height: $brand-small-icon-size;
@@ -263,10 +279,13 @@ b {
   font-weight: 600;
 }
 
+pre > b {
+  font-weight: initial;
+}
+
 a {
-  color: $brand-blue-secondary2;
+  color: $qt-link-green;
   text-decoration: none;
-  border-bottom: 1px solid rgba(42, 124, 223, 0.5);
 
   &:hover {
     color: black !important;
@@ -274,19 +293,19 @@ a {
 }
 
 h1, h2, h3 {
-  font-weight: 600;
+  font-weight: 300;
 }
 
 h2 {
   font-size: 45px;
   line-height: 45px;
-  letter-spacing: -2px;
+  text-rendering: optimizeLegibility;
   color: $gray-4;
 }
 
 h3 {
   font-size: 30px;
-  letter-spacing: -1px;
+  text-rendering: optimizeLegibility;
   line-height: 2;
   font-weight: inherit;
   color: $gray-3;
@@ -306,16 +325,16 @@ ul {
 
       li:before {
         content: '-';
-        font-weight: 600;
+        font-weight: 300;
       }
     }
   }
 
   > li:before {
-    content: '\00B7';
+    content: '\2022';
     margin-left: -1em;
     position: absolute;
-    font-weight: 600;
+    font-weight: 300;
   }
 
   ul {
@@ -334,12 +353,20 @@ ul {
   }
 }
 
+.monospace {
+  font-family: 'Source Code Pro', 'Courier New', monospace;
+}
+
+.smaller {
+    font-size: 75%;
+}
+
 pre {
   font-family: 'Source Code Pro', 'Courier New', monospace;
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 18px;
+  line-height: 1.2em;
   padding: 10px 0 10px $slide-left-right-padding;
-  letter-spacing: -1px;
+/*   letter-spacing: -1px; */
   margin-bottom: 20px;
   width: 106%;
   background-color: $gray-1;
@@ -347,9 +374,14 @@ pre {
   position: relative;
   @include box-sizing(border-box);
   /*overflow: hidden;*/
+  color: $darkgray;
 
-  &[data-lang]:after {
-    content: attr(data-lang);
+  &.smaller {
+    font-size: 18px;
+    line-height: 20px;
+  }
+  &[data-filename]:after {
+    content: attr(data-filename);
     background-color: $gray-2;
     right: 0;
     top: 0;
@@ -357,25 +389,19 @@ pre {
     font-size: 16pt;
     color: white;
     padding: 2px 25px;
-    text-transform: uppercase;
   }
 }
 
-pre[data-lang="go"] {
-  color: #333;
-}
-
 code {
-  font-size: 95%;
+//  font-size: 95%;
   font-family: 'Source Code Pro', 'Courier New', monospace;
-  color: black;
+//  color: black;
 }
 
 iframe {
   width: 100%;
   height: $slide-height - ($slide-top-bottom-padding * 2) - ($article-content-top-padding * 2);
   background: white;
-  border: 1px solid $gray-1;
   @include box-sizing(border-box);
 }
 
@@ -474,31 +500,30 @@ table {
   border-collapse: -moz-initial;
   border-collapse: initial;
   border-spacing: 2px;
-  border-bottom: 1px solid $gray-3;
-
-  tr > td:first-child, th {
-    font-weight: 600;
-    color: $gray-4;
+  color: $gray-4;
+  
+  i.fa {
+    font-size: 40px; 
   }
 
-  tr:nth-child(odd) {
+/*  tr:nth-child(odd) {
     background-color: $gray-1;
-  }
+  }*/
 
-  th {
+/*  th {
     color: white;
     font-size: 18px;
-    @include background(linear-gradient(top, $brand-blue 40%, $brand-blue-secondary2 80%) no-repeat);
-  }
+    @include background(linear-gradient(top, $gray-4 40%, $darkgray 80%) no-repeat);
+  }*/
 
   td, th {
-    font-size: 18px;
-    padding: 1em 0.5em;
+    font-size: 32px;
+    padding: 0.5em;
   }
 
   td.highlight {
     color: $gray-4;
-    @include background(linear-gradient(top, $brand-yellow 40%, $brand-yellow-secondary2 80%) no-repeat);
+    @include background(linear-gradient(top, $qt-new-green 40%, $qt-link-green 80%) no-repeat);
   }
 
   &.rows {
@@ -591,14 +616,14 @@ article.smaller {
 
 .prettyprint .str, /* string content */
 .prettyprint .atv { /* a markup attribute value */
-  color: $brand-green-secondary2; //rgb(0, 138, 53);
+  color: $creator-string; //rgb(0, 138, 53);
 }
 .prettyprint .kwd, /* a keyword */
 .prettyprint .tag { /* a markup tag name */
-  color: rgb(0, 102, 204);
+  color: $creator-keyword;
 }
 .prettyprint .com { /* a comment */
-  color: $gray-3; //rgb(127, 127, 127);
+  color: $darkgreen; //rgb(127, 127, 127);
   font-style: italic;
 }
 .prettyprint .lit { /* a literal value */
@@ -611,9 +636,11 @@ article.smaller {
 }
 .prettyprint .typ, /* a type name */
 .prettyprint .atn, /* a markup attribute name */
-.prettyprint .dec,
-.prettyprint .var { /* a declaration; a variable name */
-  color: $brand-red-secondary2; //rgb(127, 0, 127);
+.prettyprint .dec,{ /* a declaration*/
+  color: $creator-function;
+}
+.prettyprint .var { /* a variable*/
+  color: $creator-field;
 }
 .prettyprint .pln {
   color: $gray-4;
@@ -630,7 +657,6 @@ article.smaller {
   background: rgba(0, 0, 0, 0.3);
   opacity: 0;
   pointer-events: none;
-  @include flexbox;
   @include flex-center-center;
   @include border-radius($slide-border-radius);
 
@@ -677,8 +703,8 @@ article.smaller {
 
       &.backdrop {
         //@include background(linear-gradient($gray-1, white 30%, white 60%, $gray-1));
-        @include background-image(radial-gradient(50% 50%, #b1dfff 0%,
-                                                  $brand-blue 600px));
+        @include background-image(radial-gradient(50% 50%, #f3f2f2 0%,
+                                                  $qt-new-green 600px));
       }
 
       &.next {
@@ -716,6 +742,7 @@ article.smaller {
   }
 
   .note {
+    font-size: 80%;
     opacity: 1;
     @include transform(translateY(0));
     pointer-events: auto; // Allow people to do things like open links embedded in the speaker notes.
@@ -743,7 +770,7 @@ article.smaller {
 }
 
 .flexbox {
-  @include flexbox;
+  @include display-flex;
 }
 
 .flexbox.vcenter {
@@ -808,7 +835,9 @@ article.smaller {
 
 .segue {
   padding: $slide-left-right-padding $slide-left-right-padding * 2;
-
+  &.nobackground h2{
+    font-weight: 600;
+  }
   h2 {
     color: $gray-1;
     font-size: 60px;
@@ -824,9 +853,11 @@ article.smaller {
 }
 
 .thank-you-slide {
-  background: $brand-blue !important;
+  background: $qt-new-green !important;
   color: white;
-
+  &.nobackground h2{
+    font-weight: 300;
+  }
   h2 {
     font-size: 60px;
     color: inherit;
@@ -854,7 +885,7 @@ aside.gdbar {
   @include border-radius(0 10px 10px 0);
   @include background(linear-gradient(left, $gray-1, $gray-1) no-repeat);
   @include background-size(0% 100%);
-  @include transition(all 0.5s ease-out 0.5s); /* Better to transition only on background-size, but not sure how to do that with the mixin. */
+  @include transition(background-size 0.5s ease-out 0.5s); /* Better to transition only on background-size, but not sure how to do that with the mixin. */
 
   &.right {
     right: 0;
@@ -875,8 +906,8 @@ aside.gdbar {
   }
 
   img {
-    width: 85px;
-    height: 85px;
+    width: 80px;
+    height: 80px;
     position: absolute;
     right: 0;
     margin: 8px 15px;
@@ -891,7 +922,8 @@ aside.gdbar {
     h1 {
       font-size: 65px;
       line-height: 1.4;
-      letter-spacing: -3px;
+/*      letter-spacing: -1px;*/
+      text-rendering: optimizeLegibility;
       color: $gray-4;
     }
 
@@ -932,6 +964,92 @@ aside.gdbar {
   }
 }
 
+ul.nodot > li:before {
+    content: none;
+}
+
+/*  Font awesome icons could use spacing when used in lists and titles */
+h1 .fa,
+li .fa {
+    padding-right: 10px;
+}
+
+// Boxes for drawing my weird diagram... FIXME: Might be worth replacing with flexbox ?
+
+.splitter {
+    -webkit-column-count: 2;
+    -webkit-column-gap: 5px;
+}
+
+.box {
+    background: #38670b;
+    border-radius: 15px;
+    color:white;
+    font-size: 22px;
+    text-align: center;
+    padding: 5px;
+
+  &.compactText {
+    font-size: 18px;
+  }
+
+  &.blue {
+      background: #699dd3;
+  }
+
+  &.green {
+      background: #8bc953;
+      color: black;
+  }
+
+  &.orange {
+      background: orange;
+      color: black;
+  }
+
+  &.bordeaux {
+      background: #a90329;
+  }
+}
+
+/*
+    ... and give links a nice look.
+*/
+/*a {
+    color: inherit;
+    text-decoration: none;
+    padding: 0 0.1em;
+    background: rgba(128,195,66,0.3);
+    text-shadow: -1px -1px 2px rgba(100,100,100,0.9);
+    border-radius: 0.2em;
+
+    transition: 0.5s;
+}
+
+a:hover,
+a:focus {
+    background: rgba(128,195,66,0.3);;
+    text-shadow: -1px -1px 2px rgba(100,100,100,0.5);
+}*/
+
+.cc-by:before {
+    content: url("../../images/cc-by.png");
+    opacity: 0.7;
+    padding-right: 1.5em;
+}
+
+.cc-by-sa:before {
+    content: url("../../images/cc-by-sa.png");
+    opacity: 0.7;
+    padding-right: 1.5em;
+}
+
+.cc-by-nd:before {
+    content: url("../../images/cc-by-nd.png");
+    opacity: 0.7;
+    padding-right: 1.5em;
+}
+
 .overview {
 
   &.popup {
@@ -939,7 +1057,7 @@ aside.gdbar {
       display: none !important;
     }
   }
-  
+
   slides {
     slide {
       &.backdrop {

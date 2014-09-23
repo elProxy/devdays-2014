@@ -1,0 +1,26 @@
+<html>
+<head>
+<style type="text/css">
+@-webkit-keyframes rotate {
+    from {transform: rotate3D(1, 1, 0, 0deg);}
+    33% {transform: rotate3D(1, 1, 0, 80deg);}
+    66% {transform: rotate3D(0, 1, 1, 160deg);}
+    to{ transform: rotate3D(1, 0, 1, 240deg);}
+
+}
+#logo {
+    -webkit-animation-name: rotate;
+    -webkit-animation-duration: 3s;
+    -webkit-animation-iteration-count: 3;
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-animation-direction: alternate;
+    margin: auto;
+}
+</style>
+</head>
+<body>
+    <div style="display:flex;">
+        <img src="../images/Qt-logo-med.png" id="logo"></img>
+    </div>
+</body>
+</html>

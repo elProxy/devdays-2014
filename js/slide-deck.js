@@ -112,6 +112,8 @@ SlideDeck.prototype.onDomLoaded_ = function(e) {
       document.body.classList.add('popup');
     }
   //}
+  
+  // FIXME: Wrap Creative commons attributions with relevant license link
 };
 
 /**
@@ -311,6 +313,9 @@ SlideDeck.prototype.loadConfig_ = function(config) {
   if (settings.fonts) {
     this.addFonts_(settings.fonts);
   }
+  if (settings.localfonts) {
+    this.addLocalFonts_(settings.localfonts);
+  }
 
   // Builds. Default to on.
   if (!!!('useBuilds' in settings) || settings.useBuilds) {
@@ -333,6 +338,29 @@ SlideDeck.prototype.loadConfig_ = function(config) {
     var presenters = this.config_.presenters;
     var dataConfigContact = document.querySelector('[data-config-contact]');
 
+    var usesFontAwesome = (settings.localfonts && settings.localfonts.indexOf("font-awesome") >= 0);
+
+    var contactInfoSpans;
+    if (usesFontAwesome) {
+        contactInfoSpans = {
+            'g+' : '<span><i class="fa fa-google-plus-square"></i></span>',
+            'twitter' : '<span><i class="fa fa-twitter-square"></i></span>',
+            'www' : '<span><i class="fa fa-globe"></i></span>',
+            'github' : '<span><i class="fa fa-github-square"></i></span>',
+            'email' : '<span><i class="fa fa-envelope-square"></i></span>',
+            'IRC' : '<span><i class="fa fa-slack" style="transform: rotate(19deg)"></i></span>',
+        };
+    } else {
+        contactInfoSpans = {
+            'g+' : '<span>g+</span>',
+            'twitter' : '<span>twitter</span>',
+            'wwww' : '<span>www</span>',
+            'github' : '<span>github</span>',
+            'email' : '<span>email</span>',
+            'IRC' : '<span>IRC</span>',
+        };
+    }
+
     var html = [];
     if (presenters.length == 1) {
       var p = presenters[0];
@@ -343,20 +371,26 @@ SlideDeck.prototype.loadConfig_ = function(config) {
       }
       html = presenterTitle.join(' - ') + '<br>';
 
-      var gplus = p.gplus ? '<span>g+</span><a href="' + p.gplus +
-          '">' + p.gplus.replace(/https?:\/\//, '') + '</a>' : '';
+      var gplus = p.gplus ? contactInfoSpans['g+'] + '<a href="' + p.gplus +
+          '">' + p.gplus.replace(/https?:\/\//, '') + '</a><br>' : '';
 
-      var twitter = p.twitter ? '<span>twitter</span>' +
+      var twitter = p.twitter ? contactInfoSpans['twitter'] +
           '<a href="http://twitter.com/' + p.twitter + '">' +
-          p.twitter + '</a>' : '';
+          p.twitter + '</a><br>' : '';
 
-      var www = p.www ? '<span>www</span><a href="' + p.www +
-                        '">' + p.www.replace(/https?:\/\//, '') + '</a>' : '';
+      var www = p.www ? contactInfoSpans['www'] + '<a href="' + p.www +
+                        '">' + p.www.replace(/https?:\/\//, '') + '</a><br>' : '';
 
-      var github = p.github ? '<span>github</span><a href="' + p.github +
-          '">' + p.github.replace(/https?:\/\//, '') + '</a>' : '';
+      var github = p.github ? contactInfoSpans['github'] + '<a href="' + p.github +
+          '">' + p.github.replace(/https?:\/\//, '') + '</a><br>' : '';
 
-      var html2 = [gplus, twitter, www, github].join('<br>');
+      var email = p.email ? contactInfoSpans['email'] + '<a href="mailto:' + p.email +
+                        '">' + p.email + '</a><br>' : '';
+
+      var irc = p.IRC ? contactInfoSpans['IRC'] + '<a href="http://webchat.freenode.net/?channels='
+                        + p.IRC + '"><span class="monospace">' + p.IRC + '</span></a><br>': '';
+
+      var html2 = [email, irc, www, github, twitter, gplus].join('');
 
       if (dataConfigContact) {
         dataConfigContact.innerHTML = html2;
@@ -428,6 +462,19 @@ SlideDeck.prototype.addFonts_ = function(fonts) {
   el.href = ('https:' == document.location.protocol ? 'https' : 'http') +
       '://fonts.googleapis.com/css?family=' + fonts.join('|') + '&v2';
   document.querySelector('head').appendChild(el);
+};
+
+/**
+ * @private
+ * @param {Array.<string>} localfonts
+ */
+SlideDeck.prototype.addLocalFonts_ = function(fonts) {
+  fonts.map(function(fontHref) {
+    var el = document.createElement('link');
+    el.rel = 'stylesheet';
+    el.href =  'fonts/' + fontHref +'.css';
+    document.querySelector('head').appendChild(el);
+  });
 };
 
 /**
