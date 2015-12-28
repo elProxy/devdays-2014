@@ -33,7 +33,7 @@ var SLIDE_CONFIG = {
 //    gplus: 'http://plus.google.com/1234567890',
 //    twitter: '@yourhandle',
     www: 'http://www.qt.io',
-    email: 'pierre.rossi@theqtcompany.com',
+    email: 'pierre.rossi@hemispherian.com',
     IRC: '#qtwebengine',
     github: 'http://github.com/elproxy'
   }/*, {

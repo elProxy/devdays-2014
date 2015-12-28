@@ -2,6 +2,6 @@
 
 You can view the slides [here](http://elproxy.github.io/devdays-2014)
 
-Recording from Berlin should be available soon on youtube.
+Recording from Berlin is available [here](https://www.youtube.com/watch?v=q_UumdWw1iI)
 
 That's all folks!
